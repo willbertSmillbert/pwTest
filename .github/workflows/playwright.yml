@@ -1,0 +1,78 @@
+name: Playwright Tests
+ 
+variables:
+  CI: true
+ 
+trigger:
+  - main
+schedules:
+- cron: '0 16 * * *'
+  displayName: Daily morning Tests
+  branches:
+    include:
+    - main
+  always: true
+jobs:
+  - job: test
+    timeoutInMinutes: 60
+    pool:
+     name: lnx vmss
+ 
+    steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: "21.x"
+        displayName: "Install Node.js"
+         
+      - task: PowerShell@2
+        enabled: true
+        displayName: "Install dependencies"
+        inputs:
+          targetType: 'inline'
+          script: 'npm ci'
+      - task: PowerShell@2
+        enabled: true
+        displayName: "Run Playwright tests"
+        env:
+          PLAYWRIGHT_SERVICE_ACCESS_TOKEN: $(PLAYWRIGHT_SERVICE_ACCESS_TOKEN)
+          PLAYWRIGHT_SERVICE_URL: $(PLAYWRIGHT_SERVICE_URL)
+          rootURL: $(rootURL)
+          COMTRAC_USERNAME: $(COMTRAC_USERNAME)
+          COMTRAC_USERNAMETM: $(COMTRAC_USERNAMETM)
+          PASSWORD: $(PASSWORD)
+          PASSWORDTM: $(PASSWORDTM)
+          EMAIL: $(EMAIL)
+          EMAILTM: $(EMAILTM)
+          slackURL: $(slackURL)
+          forgotPasswordEmail: $(forgotPasswordEmail)
+          mailAPIKey: $(mailAPIKey)
+        inputs:
+          targetType: 'inline'
+          script: 'npx playwright test --project=chromium -c playwright.service.config.ts --workers=10'
+
+      - task: PublishPipelineArtifact@1
+        displayName: Upload Playwright report
+        inputs:
+          targetPath: playwright-report
+          artifact: 'Playwright tests'
+          publishLocation: 'pipeline'
+        condition: always()
+      - task: PublishTestResults@2
+        env:
+          rootURL: $(rootURL)
+        inputs:
+          testResultsFormat: 'JUnit'
+          testResultsFiles: '**/results*.xml'
+          mergeTestResults: true
+        condition: always()
+      - script: npx test-results-reporter publish -c config.js
+        displayName: 'Slack Reporting Results'
+        env:
+          rootURL: $(rootURL)
+          slackURL: $(slackURL)
+        condition: always()
+
+      - publish: $(System.DefaultWorkingDirectory)/playwright-report
+        artifact: playwright-report
+        # always create the artifact, this is useful for debugging failed tests
+        condition: always()

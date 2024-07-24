@@ -1,0 +1,11 @@
+<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="37.269059">
+<testsuite name="testDownload.test.ts" timestamp="2024-07-24T05:59:22.142Z" hostname="chromium" tests="1" failures="0" skipped="0" time="20.904" errors="0">
+<testcase name="Playwright Service issue › Fail the first time" classname="testDownload.test.ts" time="20.904">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\testDownload-Playwright-Service-issue-Fail-the-first-time-chromium-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>

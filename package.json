@@ -1,0 +1,43 @@
+{
+  "name": "ui_e2e",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test:head": "playwright test --headed",
+    "test": "playwright test --project=chromium",
+    "test:local":"npx playwright test --project=local",
+    "test:API": "npx playwright test --project=api",
+    "publishSlack": "npx test-results-reporter publish -c config.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@faker-js/faker": "^8.3.1",
+    "@playwright/test": "^1.41.2",
+    "@types/chai": "^4.3.10",
+    "@types/expect": "^24.3.0",
+    "@types/lodash": "^4.14.202",
+    "@types/luxon": "^3.4.0",
+    "@types/mocha": "^10.0.4",
+    "@types/node": "^20.10.4",
+    "chai": "^4.3.10",
+    "ts-mocha": "^10.0.0"
+  },
+  "dependencies": {
+    "btoa": "^1.2.1",
+    "centra": "^2.6.0",
+    "dotenv": "^16.4.1",
+    "form-data": "^4.0.0",
+    "git": "^0.1.5",
+    "isomorphic-fetch": "^3.0.0",
+    "lodash": "^4.17.21",
+    "luxon": "^3.4.4",
+    "node-fetch": "^2.7.0",
+    "otpauth": "^9.3.1",
+    "playwright": "^1.41.1",
+    "test-results-reporter": "^1.1.0",
+    "typescript": "^5.2.2"
+  }
+}
